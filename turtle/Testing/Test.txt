@@ -1,0 +1,144 @@
+=================Parser_Test=================
+1.Whitebox tests:
+NUM(Program *p);
+LTR(Program *p);
+OP(Program *p);
+
+2.Blackbox tests:
+use the cases provided to further check
+ERROR:char* currentword comparison between pointer and integer [-Werror]
+in 
+FIX->(currentword=='+'||currentword=='-'||currentword=='/'|| (currentword== '*') ) 
+add * to the front of the currentword
+
+1.Empty------PASS
+2.FORWARD-----PASS
+3.SET1---------------FAIL
+because SET-1->PFIX()->')'->PFIX()===find ")"return ->INLIST(),
+but it skip the END check, why? print out nothing.
+the logic should be:
+set...PFIX...find')'->after SET-PFIX(END)->return INSLST
+FIX -> delete moving forward in SET after check ")"
+5.SET2----------------------------FAIL
+ERROR:PFIX ERROR when moving to $A
+FIX -> Mistakely written '$' to '&'
+6.turn----------------------------PASS
+7.spiral--------------------------PASS
+ERROR:the LTR now is :$C. But it should be only C
+VAR checked:$C
+FIX -> For every time, it also may have $C passing in, so just add another situation
+8.octagon1------------------------PASS
+9.octango2------------------------FAIL
+BEFORE ITEMS:END
+fail to check"}" to end the whole loop
+BEFORE checked }: didn't find }, so it must be something wrong
+some elements are skipped, it must be something wrong with the logic
+delete the moving forward in ITEM
+10.tunnel----------------------PASS
+11.labytinth-------------------PASS
+12.hypno-----------------------FAIL
+skipped some of the items in {}
+13.5x5-------------------------FAIL
+FIX -> delete the move forward in items{}
+14.downarrow-------------------PASS
+
+=================Interpreter_Test=================
+1.Whitebox tests:
+void initializeCanvas(Canvas* c,int flag);
+PASS
+int checkVAR(Canvas *c, char* currentword);
+PASS
+void set_WORD(Canvas *c,char *currentword);
+PASS
+bool isduplicate(char* cur, Canvas* c);
+PASS
+int isop(char *c);
+ERROR: assert(isop("+-*/")==0);
+FIX isop ->make sure only one operation
+double Calcul(Canvas *c,char* former,char* latter,char* oper);
+PASS
+Using round and int to cast the result and get approximate number as it returns double 
+int isNumeric(const char* str);
+ERROR: assert(isNumeric("")==0);
+FIX ->return(*endptr=='\0' && endptr!=str);
+
+
+2.Blackbox tests:
+Using simple TTLs to first check functions, then use the cases provided to further check.
+simpleFWD
+simpleCOL
+simpleFWDRGT
+simpleFWDRGTCOL
+simpleLoopNum
+simpleLoopVar
+simpleSET
+all PASS
+
+forward.ttl--------------PASS, but cannot end
+FIX-> main function problem
+turn.ttl-----------------Reverse, cannot end properly
+the turn is completely reversed, maybe the 
+FIX -> set POSX and POSY to double type
+octagon1.ttl-----------------------PASS
+output nothing after adding COLOUR "RED"
+currentword: " R E D"
+so in the strcmp should be "\"RED\""
+octagon2.ttl------------------------PASS
+FIX -> INVALID INS?-> INS find 'OVER' -> index problem
+labyrinth.ttl------------PASS
+downarrow.ttl------------PASS
+tunnel.ttl---------------PASS
+FIX -> reset Loop logic
+set1.ttl------------------PASS
+set2.ttl------------------PASS
+spiral.ttl----------------PASS
+hypno.ttl----------------PASS
+ERROR: SET A ( $A 0.25 + )->ERROR
+c->table[index].value:P A 
+c->table[index].value:@{=Z 
+5x5.ttl------------------FAIL
+The pattern constantly expanding
+FIX -> pointer ERROR ->change the program words
+3.Border check:
+
+=================Postscript=================
+1.
+First attempt:
+use an array & union to store different types of 
+
+printf OK
+how to fprintf?
+c->post[0][0].type:        ?
+c->post[0][0].type:        ?
+//printf("c->post[2][2].type: %s\n",c->post[1][2].COMMAND);
+printf("c->post[2][2].type2:%d\n",c->post[2][2].type);
+cannot write string to ps:
+FIX->use fprintf and pointer of the file, resturct the whole thing
+2.all YELLOW are replaced by WHITE
+FIX-> wrong typing!
+3.Yelling "copyright" thing on lab machines! 
+FIX-> add"> /dev/null" to silence it
+=================Extension======================
+1. PFIX ERROR!
+printf PFIX: (
+printf p->currentword 16->GOTO *C ( $A 5 = )
+p->currentword ERROR!
+FIX -> add p->currentword+1 
+2. Infinite loop-> non stop
+ex_test1: test if GOTO's condition not match, continue
+ERROR output: nonstop R FORWARD
+the GOTO comparison doesn't work.
+FIX -> return (formerINT==latterINT)
+FIX -> add comparison is false:set pass_flag=0;
+ex_test2
+PASS
+ex_test3
+PASS
+ex_test4
+PASS
+=================Lessons learned=================
+1. For projects (those more than a week!), write journals when coding them
+(attached in Testing), and track every step for future review.
+2. New concepts of blackbox tests and Whitebox tests: should have added more
+cases to test it.
+

@@ -1,0 +1,371 @@
+The Process( Test script of the whole project)
+==============Parse=================
+/*
+PROGRESS:
+12/13: 
+Programs in the hint are doned and compiles. Moved to write the whole Parser.
+12/14:
+finish writing the parser without testing.Write test today.
+Write the main().
+15/12:
+PASS all the TTL except for the 5x5 and downarrow.
+ITEM's logic.
+*/
+
+/*
+DEBUG:
+*14/12:
+1.char* currentword comparison between pointer and integer [-Werror]
+in 
+(currentword=='+'||currentword=='-'||currentword=='/'|| (currentword== '*') ) 
+add * to the front of the currentword
+2.PFIX(Program *p)
+Compile PASS!!!!!!!!!!!!!!!!Come to test
+1.Empty------PASS
+2.FORWARD-----PASS
+3.SET1------ERROR
+RESET THE PFIX() LOGIC
+because SET-1->PFIX()->')'->PFIX()===find ")"return ->INLIST(),
+but it skip the END check, why? print out nothing.
+the logic should be:
+set...PFIX...find')'->after SET-PFIX(END)->return INSLST
+The INSLST now is:END
+The INSLST now is:
+Invalid syntax for INS
+it checks twice INSLST...WHY???
+*15/12:
+3.SET1----------------------------PASS
+delete moving forward in SET after check ")" and it pass!!!!
+4.donothing.ttl-------------------PASS
+5.SET2----------------------------PASS SET OK
+PFIX ERROR when moving to $A
+Mistakely written '$' to '&'
+6.turn----------------------------PASS
+7.spiral--------------------------PASS
+the LTR now is :$C. But it should be only C
+VAR checked:$C
+LTR:
+For every time, it also may have $C passing in, so just add another situation.
+8.octagon1------------------------PASS
+9.octango2------------------------PASS
+BEFORE ITEMS:END
+fail to check"}" to end the whole loop
+BEFORE checked }: didn't find }, so it must be something wrong
+BEFORE checked }:1
+BEFORE ITEM:2
+Parsed Integer Value: 3
+BEFORE ITEMS:4
+BEFORE checked }:4
+BEFORE ITEM:5
+Parsed Integer Value: 6
+BEFORE ITEMS:7
+BEFORE checked }:7
+BEFORE ITEM:8
+BEFORE ITEMS:FORWARD
+BEFORE checked }:FORWARD
+BEFORE ITEM:5
+BEFORE ITEMS:45
+some elements are skipped, it must be something wrong with the logic
+delete the moving forward in ITEM
+//ITEMS ITEM ERROR
+10.tunnel----------------------PASS
+11.labytinth-------------------PASS
+12.hypno-----------------------PASS
+skipped some of the items in {}
+13.5x5-------------------------PASS
+delete the move forward in items{}
+14.downarrow-------------------PASS
+
+*/
+
+==============Interp=================
+/*
+-----------
+[√]Parse
+Interp:
+[√]FORWARD
+[√]RIGHT
+[√]COLOUR
+[√]LOOP
+[√]SET
+
+output:
+[]txt
+[]Postscript
+[]PDF
+test:
+[]Test
+Extension:
+[]Extension
+-----------
+[]delete tab
+default:WHITE-W 
+19/12:
+small functions(VAR LTR NUM VARNUM)->return *passing the current word out.
+20/12:
+create a new struct named Canvas->dir, POSX, POSY, col(colour)
+WORD:added check colour and set the *colour to 'W'.
+start with the FWD and RGT with NUM,set WORD.
+
+1/1:
+No...Right can be followed by 62 so there should be more elegent ways of doing direction...
+and foward can be double...
+moving to set?
+ITEMS....STACK?
+
+1/15：
+rewrite STRUCT->write FWD RGT
+[]forward:using ANSI and loop-> in every loop, recalculate the next posX and posY 
+the number of W is correct.
+forward.ttl--------------PASS, But cannot end
+turn.ttl-----------------Reverse
+cannot end properly
+[]right:calculate and get the current direction.
+[√]rewrite main() to check these two function
+test forward turn Octagon1
+redefinition ot NeillSimpleScreen?-------SOLVED
+
+1/16:
+Fix bug:
+1.empty in interp_s:No Begin Statement?->cannot end properly.----PASS
+2.turn->reverse problem.-------------PASS
+set POSX and POSY to double type
+3.Forward->N-------------------------PASS
+-> main function problem
+4.octagon1.ttl-----------------------PASS
+FWD & RGT done!!!!!!!
+
+Write:
+1.colour
+output nothing after adding COLOUR "RED"
+currentword: " R E D"
+so in the strcmp should be "\"RED\""
+2.LOOP: "LOOP"<LTR> "OVER"<LST>   
+<INSLST>
+END
+Canvas C:
+[LTR][start_index][end_index]
+[LTR][start_index][end_index]
+[LTR][start_index][end_index]
+<loop content> -> end_index+1
+doloop function:
+int start_index=Rbracket+1
+{
+p->currentword=start_index;
+INLIST(p,c);
+}
+octagon2.ttl------------------------PASS
+INVALID INS?
+turn, forward OK
+INS find 'OVER'?
+SET:"SET"<LTR> ()
+single num loop --------------------PASS
+
+variable loop?
+->VARNUM
+set FWD RGT
+downarrow.ttl------------------------
+nested one and passing variable ones?
+labyrinth.ttl
+tunnel.ttl
+
+18/1:
+still stuck with loop variables:
+COLOUR
+FORWARD
+-------------------------------------
+REWRITE LOOP!!!!!!!!!!!!!!!!!!!!!!!
+[√]FORWARD $D
+[√]COLOUR $D 
+labyrinth.ttl------------PASS
+downarrow.ttl------------PASS
+tunnel.ttl---------------PASS
+
+
+SET:
+set1.ttl------------------PASS
+set2.ttl------------------PASS
+spiral.ttl----------------PASS
+hypno.ttl----------------PASS
+
+./interp_s TTLs/hypno.ttl out_hypno.txt
+./interp_s TTLs/5x5.ttl out_5x5.txt
+
+START
+  LOOP C OVER { "RED" "GREEN" "YELLOW" "CYAN" "MAGENTA" }
+    COLOUR $C
+    SET A ( 3.0 )
+    LOOP H OVER { 1 2 3 4 5 6 }
+        SET A ( $A 1.10 * )
+        FORWARD $A
+        RIGHT 72
+      END
+    END
+  END
+END
+
+
+SET A ( $A 0.25 + )->ERROR
+c->table[index].value:P A 
+c->table[index].value:@{=Z 
+WHY????
+strcpy ==
+
+5x5->out of border
+
+19/1:
+write txt and postscript output
+begin to write tests
+border?
+5x5.ttl------------------FAIL
+c->table[index].value=0.0?
+
+if ( 后面第一个是数字 ->        
+c->table[index].value=cur2;
+printf("numeric:%s\n",c->table[index].value);
+这个是有的[√] 3.0
+
+但是每次传到后面的时候，c->table[index].value error?
+And be treated like 0.00
+c->table[index].value
+！numeric:  j~ U
+！numeric:0.00
+！numeric:0.00
+！numeric:0.00
+！numeric:0.00
+！numeric:0.00
+
+!numeric:л  U
+
+why?????????????????????????
+value->null
+
+numeric:3.0
+!numeric.name:A
+!numeric:3.0
+heap-buffer-overflow
+
+set和pfix：
+==19481==ERROR: LeakSanitizer: detected memory leaks 5 bytes
+
+------------------------------
+outprint:51x33 array
+
+write TXT version!!!!!
+
+20/1:TXT output & postscript
+
+the output upsidedown.
+char canvas[HEIGHT][WIDTH];
+
+SCREEN:OK
+TXT output:
+comment CANVAS related:OK
+canvas related problem
+
+1.InitializeCanvas{
+for(int i=0;i<HEIGHT;++i){
+        for(int j=0;j<WIDTH;++j){
+            c->canvas[i][j]=' ';
+        }
+    }
+}
+
+2.printCanva{
+  for (int i = HEIGHT - 1; i >= 0; --i) { 
+        for (int j = 0; j < WIDTH; ++j) {
+            putchar(array[i][j]);
+        }
+        putchar('\n');
+    }
+}
+}
+
+3.FWD_TXT{
+ for(int i=0; i<cur_num;i++){
+            int x = (int)round(c->POSX);
+            int y = (int)round(c->POSY);
+            if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
+            c->canvas[y][x] = c->col;
+            }
+        //get the next posX and posY with dir
+            double direction=c->dir;
+            c->POSX+=sin(direction);
+            c->POSY-=cos(direction);
+        }
+}
+output looks right, except for swallowing some of the words?
+                              WWWWWW               
+                             W      W              
+                            W        W             
+                           W          W            
+                          W            W           
+                          W            W           
+                          W            W           
+                          W            W           
+                          W            W           
+                          W            W           
+                           W          W            
+                            W        W             
+                             W      W              
+                              WWWWWW      
+well.....I copy the result print on the SCREEN and it is also like this...
+maybe it is the TXT thing.  
+                                                   
+POSTSCRIPT:
+showpage, newpath,moveto, lineto, setrgbcolour, scale and stroke
+
+NEVER get to 
+
+printf OK
+how to fprintf?
+c->post[0][0].type:        ?
+c->post[0][0].type:        ?
+//         printf("c->post[2][2].type: %s\n",c->post[1][2].COMMAND);
+            printf("c->post[2][2].type2:%d\n",c->post[2][2].type);
+correct!
+
+c->post[2][2].type: 
+c->post[2][2].type2:0
+c->post[2][2].type3:0
+0.2         
+4 4         
+          
+30.000000 40.000000         
+30.000000 55.000000         
+0.8 0.8 0.8        
+          
+typedef enum DataType {
+    STRING,
+    DOUBLE,
+    CHAR,
+    DOUBLE2,
+    INT
+}type;
+
+union DATA{
+    char COMMAND[MAXTOKENSIZE];
+    double POS;
+    char COLOUR;
+    double WCOLOUR;
+    int SCALE_NUM;
+    enum DataType type;
+};
+typedef union DATA DATA;
+
+
+//Turn to tests first.
+
+
+21/1:tests
+
+
+
+
+
+
+
+
+
+
+*/

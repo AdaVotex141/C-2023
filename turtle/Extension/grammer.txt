@@ -1,0 +1,25 @@
+<PROG> ::= "START" <INSLST>
+
+<INSLST> ::= "END" | <INS> <INSLST> | <LABEL>  <LBL> ":" <INSLST>
+<INS> ::= <FWD> | <RGT> | <COL> | <LOOP> | <SET> | <GOTO> | <LABEL>
+
+<FWD> ::= "FORWARD" <VARNUM>
+<RGT> ::= "RIGHT" <VARNUM>
+<COL> ::= "COLOUR" <VAR> | "COLOUR" <WORD>
+<LOOP> ::= "LOOP" <LTR> "OVER" <LST> 
+<SET> ::= "SET" <LTR> "(" <PFIX>
+<GOTO> ::= "GOTO" <LBL> "(" <PFIX>
+<LABEL> ::= "LABEL" <LBL> ":" <INSLST>
+
+<VARNUM> ::= <VAR> | <NUM>
+<VAR> ::= $<LTR>
+<LTR> ::= A, B ... Z
+<NUM> ::= 10 or -17.99 etc.
+<WORD> ::= "RED", "BLUE", "HELLO!" or "178"
+<LST> ::= "{" <ITEMS>
+<ITEMS> ::= "}" | <ITEM> <ITEMS>
+<ITEM> ::= <VARNUM> | <WORD>
+<PFIX> ::= ")" | <OP> <PFIX> | <VARNUM> <PFIX>
+<OP> ::= + - / *
+<LBL> ::= *<LTR>
+<CO> ::= > < =

@@ -1,0 +1,9 @@
+Implemented conditional statements with the addition of GOTO and LABEL
+Basically, I created these grammer:
+<LABEL>::= "LABEL" <LBL> ":" <INSLST>
+<GOTO> ::= "GOTO" <LBL> "(" <PFIX>
+<LBL> ::= *<LTR>
+For conditional statements, I added:
+<CO> ::= > < =
+Execution Flow of Conditional Statements: When the condition evaluates to true, the program will jump to the corresponding label <LBL> and execute the instruction list <INSLST> that follows the jump.
+This extension allows the use of labels and conditional statements in the program, providing a more flexible control flow. For instance, it enables basic conditional checks using GOTO and LABEL, allowing the execution of different instructions based on the satisfaction of the specified conditions.

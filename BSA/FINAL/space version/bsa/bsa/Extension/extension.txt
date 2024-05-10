@@ -1,0 +1,18 @@
+1.what you have done：
+Do the BSA thing in linked list.
+Inside every Node, there is a element named indx, which is the indx in the ordinary BSA.
+Every time we set a Node, just connect it to the previous linked list or insert it .
+2.the motivation
+(1)Linked lists can dynamically grow and shrink, allowing for efficient insertion and deletion of elements.
+(2)The space is only allocated when created a new Node. It saves memory.
+Each element in a linked list can be allocated independently, enabling efficient memory usage, especially when the size is unpredictable.
+3.how well it works in practice (or not)
+* Runtime:
+Total time taken: 0.000004 seconds in BSA
+Total time taken: 0.000098 seconds in Linked list
+Linked List is still slightly slower than BSA.
+* Memory:
+1,760 bytes allocated in BSA.
+total heap usage: 10 allocs, 10 frees, 5,344 bytes allocated
+4.comparing it with the original BSA
+linked list version of it actually have more advantages in memory management, but 

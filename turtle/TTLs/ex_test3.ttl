@@ -1,0 +1,8 @@
+START
+SET A ( 3 )
+LABEL *C :
+COLOUR "RED"
+FORWARD 6
+END
+GOTO *C ( $A 2 < )
+END
